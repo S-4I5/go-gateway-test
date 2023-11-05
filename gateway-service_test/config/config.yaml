@@ -1,0 +1,28 @@
+env: "local"
+
+http_server:
+  host: "localhost"
+  port: 8765
+  timeout: 4s
+  idle_timeout: 60s
+
+routes:
+
+  - id: ping
+    uri: /ping
+    predicates: localhost:8082/ping
+    filters:
+      - AuthReq
+      - RelayUsername
+
+  - id: pong
+    uri: /pong
+    predicates: localhost:8082/pong
+
+auth_server:
+  uri: "localhost:8081"
+  login: "/login"
+  register: "/register"
+
+discovery:
+  uri: "disc"

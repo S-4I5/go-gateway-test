@@ -1,0 +1,22 @@
+env: "local"
+
+http_server:
+  host: "localhost"
+  port: 8081
+  timeout: 4s
+  idle_timeout: 60s
+  name: "auth-server"
+
+grpc:
+  port: 8082
+
+db:
+  host: "localhost"
+  port: "5432"
+  db_name: "test"
+  user: "postgres"
+  password: "password"
+  mode: "drop-on-start" #drop-on-start, init-if-not-exists
+
+jwt:
+  secret: "204a2a5a7d652931bf8b33e87578f1d655fbed400527fa9c08f4925e82009fc6"

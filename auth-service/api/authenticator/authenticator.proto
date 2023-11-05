@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+
+package authenticator;
+
+option go_package = "auth-service/internal/proto/authenticator;authenticator";
+
+service Authenticator {
+  rpc Authenticate(AuthenticationRequest) returns (AuthenticationResponse) {}
+}
+
+message AuthenticationRequest {
+  string token = 1;
+}
+
+message AuthenticationResponse {
+  string username = 1;
+}
