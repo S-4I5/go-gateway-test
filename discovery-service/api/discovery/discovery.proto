@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package discovery;
+
+option go_package = "discovery-service/internal/proto/discovery;discovery";
+
+import "google/protobuf/empty.proto";
+
+service Discovery {
+  rpc Register(RegisterRequest) returns (google.protobuf.Empty) {}
+  rpc Beat(BeatRequest) returns (google.protobuf.Empty) {}
+  rpc GetService(GetServiceRequest) returns (GetServiceResponse) {}
+}
+
+message BeatRequest {
+  string topic = 1;
+  string address = 2;
+}
+
+message GetServiceRequest {
+  string topic = 1;
+}
+
+message GetServiceResponse {
+  string address = 1;
+}
+
+message RegisterRequest {
+  string topic = 1;
+  string address = 2;
+}

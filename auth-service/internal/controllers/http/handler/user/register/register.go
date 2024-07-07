@@ -26,7 +26,7 @@ func New(log *slog.Logger, useCase UseCase) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		const op = "handlers/user/register.New"
+		const op = "handlers/user/register_case.New"
 
 		log = log.With(
 			slog.String("op", op),

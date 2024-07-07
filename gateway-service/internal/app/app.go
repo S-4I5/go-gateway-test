@@ -1,10 +1,12 @@
 package app
 
 import (
+	"example.com/discovery-service/pkg/proto/discovery"
 	"fmt"
 	gprcAuth "gateway-service/internal/authprovider/gprc"
 	"gateway-service/internal/config"
-	"gateway-service/internal/proto/authenticator"
+	discoveryClient "gateway-service/internal/discovery-client"
+	"gateway-service/pkg/proto/authenticator"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
@@ -57,20 +59,34 @@ func StartServer(cfg *config.Config) {
 	setupCustomRoutes(cfg, myAuth)
 
 	log.Println("Started shit")
+
 	err := http.ListenAndServe(cfg.HTTPServer.Host+":"+cfg.HTTPServer.Port, nil)
 	if err != nil {
 		log.Panic(err)
 	}
+}
 
+func setupDiscoveryClient(config *config.Config) *discoveryClient.DiscoveryGatewayClient {
+	conn, err := grpc.Dial(config.Discovery.Uri, grpc.WithInsecure())
+	if err != nil {
+		fmt.Println("cannot setup con with discovery")
+		return nil
+	}
+
+	return discoveryClient.New(discovery.NewDiscoveryClient(conn))
 }
 
 func setupCustomRoutes(config *config.Config, myAuth *gprcAuth.Provider) {
 	routes := config.Routes
 
+	disc := setupDiscoveryClient(config)
+
 	for i := range routes {
 		log.Println("XD", i)
-		redir := routes[i].Predicates
+
 		filters := New(routes[i].Filters)
+		id := routes[i].Id
+		endPoint := routes[i].Uri
 
 		http.HandleFunc(routes[i].Uri, func(res http.ResponseWriter, req *http.Request) {
 
@@ -93,7 +109,12 @@ func setupCustomRoutes(config *config.Config, myAuth *gprcAuth.Provider) {
 				req.Header.Add("X-Username", username)
 			}
 
-			proxy("http://"+redir, res, req)
+			redir, err := disc.GetService(id)
+			if err != nil {
+				log.Println("cannot reach discovery")
+			}
+
+			proxy("http://"+redir+endPoint, res, req)
 		})
 	}
 }

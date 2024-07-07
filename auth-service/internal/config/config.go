@@ -41,11 +41,6 @@ type JWT struct {
 }
 
 func MustLoad(configPath string) *Config {
-	/*configPath := os.Getenv("CONFIG_PATH")
-	if configPath == "" {
-		log.Fatal("CONFIG_PATH not set")
-	}*/
-
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
 		log.Fatal("Cannot find config file")
 	}

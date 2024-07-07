@@ -42,5 +42,5 @@ func (authServer *AuthServer) Authenticate(token string) bool {
 }
 
 func Register(login, password string) (int, error) {
-	return -1, fmt.Errorf("cannot register")
+	return -1, fmt.Errorf("cannot register_case")
 }

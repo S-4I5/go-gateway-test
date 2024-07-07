@@ -12,8 +12,8 @@ routes:
     uri: /ping
     predicates: localhost:8083/ping
     filters:
-      - AuthReq
-      - RelayUsername
+     - AuthReq
+     - RelayUsername
 
   - id: pong
     uri: /pong
@@ -26,4 +26,4 @@ auth_server:
   grpc: "localhost:8082"
 
 discovery:
-  uri: "disc"
+  uri: "localhost:8888"

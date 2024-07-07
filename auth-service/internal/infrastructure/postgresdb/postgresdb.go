@@ -13,7 +13,7 @@ type DataBase struct {
 }
 
 const (
-	ROLE_USER  = "user"
+	RoleUser   = "user"
 	ROLE_ADMIN = "admin"
 )
 
@@ -31,9 +31,9 @@ const (
 		role text
 	);`
 
-	INSERT_USER = "INSERT INTO users (username, password, role) VALUES ($1, $2, $3) RETURNING user_id;"
+	InsertUser = "INSERT INTO users (username, password, role) VALUES ($1, $2, $3) RETURNING user_id;"
 
-	SELECT_USER_BY_USERNAME = "SELECT * FROM users WHERE username = $1;"
+	SelectUserByUsername = "SELECT * FROM users WHERE username = $1;"
 
 	CHECK_IF_USER_EXISTS = "SELECT 1 FROM users WHERE username = $1;"
 )
@@ -80,13 +80,13 @@ func New(dbConfig config.DB) (*DataBase, error) {
 func (db *DataBase) SaveUser(username, password string) (int, error) {
 	op := "db.psql.SaveUser"
 
-	statement, err := db.DB.Prepare(INSERT_USER)
+	statement, err := db.DB.Prepare(InsertUser)
 	if err != nil {
 		return -1, fmt.Errorf("%s: %w", op, err)
 	}
 
 	var result int
-	err = statement.QueryRow(username, password, ROLE_USER).Scan(&result)
+	err = statement.QueryRow(username, password, RoleUser).Scan(&result)
 	if err != nil {
 		return -1, fmt.Errorf("%s: %w", op, err)
 	}
@@ -97,7 +97,7 @@ func (db *DataBase) SaveUser(username, password string) (int, error) {
 func (db *DataBase) GetUser(username string) (*user.User, error) {
 	op := "db.psql.GetUser"
 
-	statement, err := db.DB.Prepare(SELECT_USER_BY_USERNAME)
+	statement, err := db.DB.Prepare(SelectUserByUsername)
 	if err != nil {
 		return nil, fmt.Errorf("%s: %w", op, err)
 	}

@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Env        string `yaml:"env" env-required:"true"`
 	Name       string `yaml:"name"`
+	Discovery  `yaml:"discovery"`
 	HTTPServer `yaml:"http_server"`
 }
 
@@ -17,6 +18,12 @@ type HTTPServer struct {
 	Address     string        `yaml:"address" env-default:"localhost:8080"`
 	Timeout     time.Duration `yaml:"timeout" env-default:"4s"`
 	IdleTimeout time.Duration `yaml:"idle-timeout" env-default:"60s"`
+}
+
+type Discovery struct {
+	Enable bool   `yaml:"enable" env-default:"false"`
+	Uri    string `yaml:"uri"`
+	Topic  string `yaml:"topic"`
 }
 
 func MustLoad(configPath string) *Config {

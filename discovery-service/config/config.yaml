@@ -1,0 +1,9 @@
+env: "local"
+
+grpc-server:
+  host: "localhost"
+  port: 8888
+  name: "auth-server"
+
+server-registry:
+  timeout: 3s

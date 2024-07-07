@@ -26,11 +26,8 @@ import (
 )
 
 func StartServer(config *config.Config, logger *slog.Logger) {
-
 	dataBase := setupDB(config, logger)
-
 	jwtUtil := setupJWTUtil(config)
-
 	router := setupRouter(logger, dataBase, jwtUtil)
 
 	addr := config.HTTPServer.Host + ":" + config.HTTPServer.Port
