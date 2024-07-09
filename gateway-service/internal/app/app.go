@@ -58,8 +58,6 @@ func StartServer(cfg *config.Config) {
 
 	setupCustomRoutes(cfg, myAuth)
 
-	log.Println("Started shit")
-
 	err := http.ListenAndServe(cfg.HTTPServer.Host+":"+cfg.HTTPServer.Port, nil)
 	if err != nil {
 		log.Panic(err)
@@ -82,8 +80,6 @@ func setupCustomRoutes(config *config.Config, myAuth *gprcAuth.Provider) {
 	disc := setupDiscoveryClient(config)
 
 	for i := range routes {
-		log.Println("XD", i)
-
 		filters := New(routes[i].Filters)
 		id := routes[i].Id
 		endPoint := routes[i].Uri
@@ -104,8 +100,6 @@ func setupCustomRoutes(config *config.Config, myAuth *gprcAuth.Provider) {
 			}
 
 			if filters.RelayUsername {
-				fmt.Println("XDD")
-				fmt.Println("name", username)
 				req.Header.Add("X-Username", username)
 			}
 
